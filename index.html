@@ -1,1 +1,1396 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WellSpring Studio LLC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --baja: #00e5c3;
+    --baja-dim: #00b89a;
+    --baja-glow: rgba(0,229,195,0.18);
+    --baja-glow-strong: rgba(0,229,195,0.38);
+    --black: #050807;
+    --surface: #0b0f0d;
+    --surface2: #111712;
+    --border: rgba(0,229,195,0.12);
+    --border-bright: rgba(0,229,195,0.35);
+    --text: #e8f5f2;
+    --text-dim: #7aada3;
+    --font-display: 'Syne', sans-serif;
+    --font-mono: 'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: var(--font-display);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--baja);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.08s ease, width 0.2s, height 0.2s, opacity 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--baja);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.25s, height 0.25s, opacity 0.25s, border-color 0.2s;
+    opacity: 0.5;
+  }
+  body:has(a:hover) .cursor, body:has(button:hover) .cursor { width: 20px; height: 20px; }
+  body:has(a:hover) .cursor-ring, body:has(button:hover) .cursor-ring { width: 56px; height: 56px; opacity: 0.3; }
+
+  /* GRID BACKGROUND */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,195,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,195,0.04) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .grid-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,229,195,0.06) 0%, transparent 70%);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 48px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(5,8,7,0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    color: var(--baja);
+    text-transform: uppercase;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .nav-logo-mark {
+    width: 28px; height: 28px;
+    border: 2px solid var(--baja);
+    transform: rotate(45deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .nav-logo-mark::after {
+    content: '';
+    width: 10px; height: 10px;
+    background: var(--baja);
+    transform: rotate(45deg);
+  }
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; left: 0;
+    width: 0; height: 1px;
+    background: var(--baja);
+    transition: width 0.25s ease;
+  }
+  .nav-links a:hover { color: var(--baja); }
+  .nav-links a:hover::after { width: 100%; }
+  .nav-cta {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--baja);
+    border: none;
+    padding: 10px 22px;
+    cursor: none;
+    font-weight: 700;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .nav-cta:hover {
+    background: #00ffda;
+    box-shadow: 0 0 24px var(--baja-glow-strong);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 48px 80px;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  /* 3D PRINTER ANIMATION - SVG based */
+  .printer-visual {
+    position: absolute;
+    right: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 580px;
+    height: 580px;
+    opacity: 0;
+    animation: fadeSlideIn 1.2s ease 0.4s forwards;
+  }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(-50%) translateX(40px); }
+    to { opacity: 1; transform: translateY(-50%) translateX(0); }
+  }
+
+  .hero-tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--baja);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.1s forwards;
+  }
+  .hero-tag::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--baja);
+  }
+
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(52px, 7vw, 100px);
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    color: var(--text);
+    max-width: 700px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.2s forwards;
+  }
+  .hero-h1 span {
+    color: var(--baja);
+    display: block;
+    text-shadow: 0 0 60px rgba(0,229,195,0.4);
+  }
+
+  .hero-sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.8;
+    color: var(--text-dim);
+    max-width: 460px;
+    margin-top: 32px;
+    letter-spacing: 0.02em;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.35s forwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 16px;
+    margin-top: 48px;
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.5s forwards;
+  }
+
+  .btn-primary {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--black);
+    background: var(--baja);
+    border: none;
+    padding: 16px 36px;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: background 0.2s, box-shadow 0.25s, transform 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    transform: translateX(-100%);
+    transition: transform 0.5s ease;
+  }
+  .btn-primary:hover::before { transform: translateX(100%); }
+  .btn-primary:hover {
+    background: #00ffda;
+    box-shadow: 0 0 40px rgba(0,229,195,0.5);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--baja);
+    background: transparent;
+    border: 1px solid var(--border-bright);
+    padding: 16px 36px;
+    cursor: none;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color 0.2s, box-shadow 0.25s, background 0.2s;
+  }
+  .btn-ghost:hover {
+    border-color: var(--baja);
+    background: var(--baja-glow);
+    box-shadow: 0 0 24px rgba(0,229,195,0.15);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    margin-top: 80px;
+    padding-top: 40px;
+    border-top: 1px solid var(--border);
+    opacity: 0;
+    animation: fadeUp 0.9s ease 0.65s forwards;
+  }
+  .stat-num {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--baja);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .stat-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-top: 6px;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* MARQUEE STRIP */
+  .marquee-strip {
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    padding: 14px 0;
+  }
+  .marquee-inner {
+    display: flex;
+    gap: 0;
+    width: max-content;
+    animation: marquee 24s linear infinite;
+  }
+  .marquee-item {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0 32px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .marquee-item span {
+    color: var(--baja);
+    font-size: 16px;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* SECTION SHARED */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-inner {
+    padding: 120px 48px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--baja);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::before {
+    content: '';
+    width: 24px; height: 1px;
+    background: var(--baja);
+  }
+
+  .section-h2 {
+    font-size: clamp(36px, 4vw, 64px);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    margin-top: 64px;
+    border: 1px solid var(--border);
+  }
+  .service-card {
+    background: var(--surface);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--baja);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .service-card:hover { background: var(--surface2); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--baja);
+    letter-spacing: 0.15em;
+    margin-bottom: 32px;
+  }
+  .service-icon {
+    width: 48px; height: 48px;
+    margin-bottom: 28px;
+    color: var(--baja);
+  }
+  .service-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .service-body {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 1.8;
+    color: var(--text-dim);
+  }
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 28px;
+  }
+  .tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--baja);
+    border: 1px solid var(--border-bright);
+    padding: 4px 10px;
+  }
+
+  /* PROCESS */
+  .process-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .process-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    margin-top: 64px;
+  }
+  .process-steps { display: flex; flex-direction: column; gap: 0; }
+  .process-step {
+    display: flex;
+    gap: 32px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    cursor: default;
+    transition: background 0.2s;
+  }
+  .process-step:first-child { border-top: 1px solid var(--border); }
+  .step-num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--baja);
+    letter-spacing: 0.1em;
+    min-width: 32px;
+    margin-top: 2px;
+  }
+  .step-content {}
+  .step-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .step-desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  /* LAYER VISUALIZER */
+  .layer-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 48px;
+    border: 1px solid var(--border);
+    background: var(--black);
+    position: relative;
+  }
+  .layer-visual::before {
+    content: 'LAYER PREVIEW';
+    position: absolute;
+    top: 16px; left: 20px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--baja);
+    text-transform: uppercase;
+  }
+  .layer-visual::after {
+    content: '';
+    position: absolute;
+    top: 16px; right: 20px;
+    width: 6px; height: 6px;
+    background: var(--baja);
+    border-radius: 50%;
+    animation: blink 1.2s ease infinite;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  .layer {
+    height: 3px;
+    background: var(--baja);
+    border-radius: 1px;
+    animation: layerGrow 3s ease infinite;
+    transform-origin: center;
+  }
+  @keyframes layerGrow {
+    0% { transform: scaleX(0); opacity: 0; }
+    20% { transform: scaleX(1); opacity: 1; }
+    80% { transform: scaleX(1); opacity: 0.7; }
+    100% { transform: scaleX(0.8); opacity: 0.4; }
+  }
+
+  /* PRODUCTS / FEATURED WORK */
+  .products-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 64px;
+  }
+  .product-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.25s;
+  }
+  .product-card:hover {
+    border-color: var(--baja);
+    transform: translateY(-4px);
+  }
+  .product-card.featured {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .product-card-glow {
+    position: absolute;
+    width: 200px; height: 200px;
+    background: radial-gradient(circle, var(--baja-glow) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+    transition: opacity 0.3s;
+    opacity: 0;
+  }
+  .product-card:hover .product-card-glow { opacity: 1; }
+  .product-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--baja);
+    margin-bottom: 20px;
+  }
+  .product-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+  .product-desc {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+  .product-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* TECH SPECS SECTION */
+  .specs-section {
+    border-top: 1px solid var(--border);
+  }
+  .specs-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 80px;
+    margin-top: 64px;
+    align-items: start;
+  }
+  .specs-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .spec-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .spec-row:first-child { border-top: 1px solid var(--border); }
+  .spec-key {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .spec-val {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--baja);
+  }
+
+  .materials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .material-chip {
+    border: 1px solid var(--border);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .material-chip:hover { border-color: var(--baja); }
+  .material-name {
+    font-size: 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .material-desc {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+  .material-chip::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--baja), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s ease;
+  }
+  .material-chip:hover::after { transform: scaleX(1); }
+
+  /* FAITH SECTION */
+  .faith-section {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .faith-inner {
+    padding: 100px 48px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .faith-quote {
+    font-size: clamp(24px, 3.5vw, 44px);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 32px;
+    color: var(--text);
+  }
+  .faith-quote em {
+    color: var(--baja);
+    font-style: normal;
+  }
+  .faith-body {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.9;
+    color: var(--text-dim);
+    max-width: 600px;
+    margin: 0 auto 40px;
+  }
+  .faith-cross {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--baja);
+  }
+  .faith-cross::before, .faith-cross::after {
+    content: '';
+    width: 40px; height: 1px;
+    background: var(--baja);
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 140px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,229,195,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .cta-h2 {
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
+    line-height: 0.95;
+    margin-bottom: 40px;
+  }
+  .cta-h2 span { color: var(--baja); }
+  .cta-sub {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    max-width: 500px;
+    margin: 0 auto 48px;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+  .footer-logo {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--baja);
+  }
+  .footer-copy {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+  .footer-tagline {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* SCAN LINE OVERLAY */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+    z-index: 9990;
+  }
+
+  /* SCROLL ANIMATIONS */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* CORNER MARKS */
+  .corner-mark {
+    position: absolute;
+    width: 20px; height: 20px;
+    border-color: var(--baja);
+    border-style: solid;
+    opacity: 0.5;
+  }
+  .corner-tl { top: 0; left: 0; border-width: 2px 0 0 2px; }
+  .corner-tr { top: 0; right: 0; border-width: 2px 2px 0 0; }
+  .corner-bl { bottom: 0; left: 0; border-width: 0 0 2px 2px; }
+  .corner-br { bottom: 0; right: 0; border-width: 0 2px 2px 0; }
+
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <div class="nav-logo-mark"></div>
+    WellSpring Studio
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#materials">Materials</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <button class="nav-cta">Get a Quote</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">// Fort Smith, AR &nbsp;·&nbsp; Est. 2025</div>
+
+  <h1 class="hero-h1">
+    Built<br>
+    <span>Layer</span>
+    By Layer.
+  </h1>
+
+  <p class="hero-sub">
+    WellSpring Studio LLC — precision 3D printing, custom fabrication, and faith-rooted craftsmanship for your next project.
+  </p>
+
+  <div class="hero-actions">
+    <a href="#services" class="btn-primary">Explore Services</a>
+    <a href="#process" class="btn-ghost">How It Works</a>
+  </div>
+
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">0.1<span style="font-size:20px">mm</span></div>
+      <div class="stat-label">Layer Precision</div>
+    </div>
+    <div>
+      <div class="stat-num">4+</div>
+      <div class="stat-label">Active Printers</div>
+    </div>
+    <div>
+      <div class="stat-num">∞</div>
+      <div class="stat-label">Possibilities</div>
+    </div>
+  </div>
+
+  <!-- SVG Printer Illustration -->
+  <div class="printer-visual">
+    <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" fill="none">
+      <defs>
+        <radialGradient id="glowCenter" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#00e5c3" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#00e5c3" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="glowStrong">
+          <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+          <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- Ambient glow bg -->
+      <circle cx="250" cy="250" r="220" fill="url(#glowCenter)"/>
+
+      <!-- Frame - back verticals -->
+      <line x1="120" y1="80" x2="120" y2="400" stroke="#00e5c3" stroke-width="1.5" stroke-opacity="0.3"/>
+      <line x1="380" y1="80" x2="380" y2="400" stroke="#00e5c3" stroke-width="1.5" stroke-opacity="0.3"/>
+
+      <!-- Frame - top bar -->
+      <rect x="110" y="70" width="280" height="18" rx="2" fill="#0b1410" stroke="#00e5c3" stroke-width="1" stroke-opacity="0.6"/>
+      <rect x="118" y="75" width="80" height="8" rx="1" fill="#00e5c3" fill-opacity="0.25"/>
+      <circle cx="368" cy="79" r="4" fill="#00e5c3" filter="url(#glowStrong)" opacity="0.9">
+        <animate attributeName="opacity" values="0.9;0.3;0.9" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+
+      <!-- Frame - bottom base -->
+      <rect x="90" y="395" width="320" height="22" rx="3" fill="#0b1410" stroke="#00e5c3" stroke-width="1" stroke-opacity="0.5"/>
+      <rect x="140" y="399" width="220" height="10" rx="1" fill="#00e5c3" fill-opacity="0.08"/>
+
+      <!-- Build plate -->
+      <rect x="145" y="340" width="210" height="12" rx="1" fill="#0b1410" stroke="#00e5c3" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Plate grid lines -->
+      <line x1="175" y1="340" x2="175" y2="352" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="215" y1="340" x2="215" y2="352" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="255" y1="340" x2="255" y2="352" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="295" y1="340" x2="295" y2="352" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.3"/>
+      <line x1="325" y1="340" x2="325" y2="352" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.3"/>
+
+      <!-- Object being printed (diamond/gem shape) -->
+      <!-- Layers building up - animated -->
+      <rect x="205" y="332" width="90" height="4" rx="0.5" fill="#00e5c3" fill-opacity="0.9" filter="url(#glow)">
+        <animate attributeName="y" values="340;332;332" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="fill-opacity" values="0;0.9;0.9" dur="4s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="210" y="324" width="80" height="4" rx="0.5" fill="#00e5c3" fill-opacity="0.8">
+        <animate attributeName="y" values="340;340;324;324" dur="4s" keyTimes="0;0.3;0.6;1" repeatCount="indefinite"/>
+        <animate attributeName="fill-opacity" values="0;0;0.8;0.8" dur="4s" keyTimes="0;0.3;0.6;1" repeatCount="indefinite"/>
+      </rect>
+      <rect x="215" y="316" width="70" height="4" rx="0.5" fill="#00e5c3" fill-opacity="0.7">
+        <animate attributeName="y" values="340;340;340;316" dur="4s" keyTimes="0;0.5;0.7;1" repeatCount="indefinite"/>
+        <animate attributeName="fill-opacity" values="0;0;0;0.7" dur="4s" keyTimes="0;0.5;0.7;1" repeatCount="indefinite"/>
+      </rect>
+      <rect x="221" y="308" width="58" height="4" rx="0.5" fill="#00e5c3" fill-opacity="0.6">
+        <animate attributeName="y" values="340;340;340;340;308" dur="5s" keyTimes="0;0.4;0.6;0.8;1" repeatCount="indefinite"/>
+        <animate attributeName="fill-opacity" values="0;0;0;0;0.6" dur="5s" keyTimes="0;0.4;0.6;0.8;1" repeatCount="indefinite"/>
+      </rect>
+      <rect x="228" y="300" width="44" height="4" rx="0.5" fill="#00e5c3" fill-opacity="0.5">
+        <animate attributeName="y" values="340;340;340;300" dur="6s" keyTimes="0;0.5;0.7;1" repeatCount="indefinite"/>
+        <animate attributeName="fill-opacity" values="0;0;0;0.5" dur="6s" keyTimes="0;0.5;0.7;1" repeatCount="indefinite"/>
+      </rect>
+
+      <!-- Hotend / printhead - moves -->
+      <g>
+        <animateTransform attributeName="transform" type="translate" values="0,0;60,0;60,40;0,40;0,0" dur="4s" repeatCount="indefinite"/>
+        <!-- Carriage -->
+        <rect x="195" y="195" width="110" height="28" rx="2" fill="#0a1510" stroke="#00e5c3" stroke-width="1.2" stroke-opacity="0.7"/>
+        <rect x="205" y="199" width="40" height="16" rx="1" fill="#00e5c3" fill-opacity="0.12"/>
+        <rect x="255" y="199" width="40" height="16" rx="1" fill="#00e5c3" fill-opacity="0.08"/>
+        <!-- Motor indicator -->
+        <circle cx="210" cy="207" r="4" fill="none" stroke="#00e5c3" stroke-width="1" stroke-opacity="0.6"/>
+        <!-- Nozzle -->
+        <polygon points="245,223 255,223 253,240 247,240" fill="#00e5c3" fill-opacity="0.7"/>
+        <line x1="250" y1="240" x2="250" y2="252" stroke="#00e5c3" stroke-width="1.5" stroke-dasharray="3,3" stroke-opacity="0.6">
+          <animate attributeName="stroke-dashoffset" values="0;-12" dur="0.5s" repeatCount="indefinite"/>
+        </line>
+        <!-- Extrusion droplet glow -->
+        <circle cx="250" cy="254" r="3" fill="#00e5c3" filter="url(#glowStrong)" opacity="0.8">
+          <animate attributeName="cy" values="254;260;254" dur="0.8s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" values="0.8;0;0.8" dur="0.8s" repeatCount="indefinite"/>
+        </circle>
+      </g>
+
+      <!-- X-axis rail -->
+      <rect x="108" y="193" width="284" height="6" rx="1" fill="#0b0f0d" stroke="#00e5c3" stroke-width="1" stroke-opacity="0.4"/>
+
+      <!-- Z-axis rods -->
+      <rect x="108" y="93" width="6" height="300" rx="1" fill="#00e5c3" fill-opacity="0.15" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.4"/>
+      <rect x="386" y="93" width="6" height="300" rx="1" fill="#00e5c3" fill-opacity="0.15" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.4"/>
+
+      <!-- Filament spool (top right) -->
+      <circle cx="398" cy="130" r="38" fill="#0b0f0d" stroke="#00e5c3" stroke-width="1" stroke-opacity="0.4"/>
+      <circle cx="398" cy="130" r="24" fill="#0b1410" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.25"/>
+      <circle cx="398" cy="130" r="10" fill="#00e5c3" fill-opacity="0.12" stroke="#00e5c3" stroke-width="1" stroke-opacity="0.5"/>
+      <!-- Spool rings -->
+      <circle cx="398" cy="130" r="32" fill="none" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.2" stroke-dasharray="4,4">
+        <animateTransform attributeName="transform" type="rotate" from="0 398 130" to="360 398 130" dur="8s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Filament path to printer -->
+      <path d="M 370 130 C 340 130 320 100 280 100 L 250 100" stroke="#00e5c3" stroke-width="1" stroke-opacity="0.4" stroke-dasharray="4,4" fill="none"/>
+
+      <!-- Corner marks -->
+      <rect x="110" y="70" width="12" height="2" fill="#00e5c3" fill-opacity="0.8"/>
+      <rect x="110" y="70" width="2" height="12" fill="#00e5c3" fill-opacity="0.8"/>
+      <rect x="378" y="70" width="12" height="2" fill="#00e5c3" fill-opacity="0.8"/>
+      <rect x="388" y="70" width="2" height="12" fill="#00e5c3" fill-opacity="0.8"/>
+
+      <!-- Status readout -->
+      <rect x="128" y="425" width="155" height="28" rx="1" fill="#0b0f0d" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.3"/>
+      <text x="136" y="434" font-family="Space Mono, monospace" font-size="7" fill="#00e5c3" fill-opacity="0.8" letter-spacing="0.08em">TEMP: 220°C / 60°C</text>
+      <text x="136" y="445" font-family="Space Mono, monospace" font-size="7" fill="#00e5c3" fill-opacity="0.5" letter-spacing="0.08em">STATUS: PRINTING...</text>
+
+      <rect x="295" y="425" width="100" height="28" rx="1" fill="#0b0f0d" stroke="#00e5c3" stroke-width="0.5" stroke-opacity="0.3"/>
+      <text x="303" y="434" font-family="Space Mono, monospace" font-size="7" fill="#00e5c3" fill-opacity="0.8" letter-spacing="0.08em">LAYER: 24/60</text>
+      <text x="303" y="445" font-family="Space Mono, monospace" font-size="7" fill="#00e5c3" fill-opacity="0.5" letter-spacing="0.08em">ETA: 01:22:40</text>
+    </svg>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <div class="marquee-item">FDM Printing <span>+</span> Custom Parts <span>+</span> Rapid Prototyping <span>+</span> TPU Flex Parts <span>+</span> Electroplating <span>+</span> Multi-Color Printing <span>+</span> Ammo Storage <span>+</span> Faith-Rooted Business <span>+</span> Fort Smith AR <span>+</span></div>
+    <div class="marquee-item">FDM Printing <span>+</span> Custom Parts <span>+</span> Rapid Prototyping <span>+</span> TPU Flex Parts <span>+</span> Electroplating <span>+</span> Multi-Color Printing <span>+</span> Ammo Storage <span>+</span> Faith-Rooted Business <span>+</span> Fort Smith AR <span>+</span></div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-inner">
+    <div class="section-label reveal">// What We Build</div>
+    <h2 class="section-h2 reveal">Our<br>Services.</h2>
+
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4" y="36" width="40" height="5" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="14" y="24" width="20" height="10" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="18" y="16" width="12" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="21" y="10" width="6" height="4" rx="0.5" fill="currentColor" fill-opacity="0.3" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="24" y1="6" x2="24" y2="10" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="24" cy="5" r="2" fill="currentColor"/>
+        </svg>
+        <div class="service-title">Custom FDM Printing</div>
+        <p class="service-body">Precision-printed parts, prototypes, and products from your designs or ours. Fast turnaround with professional results.</p>
+        <div class="service-tags">
+          <span class="tag">PLA+</span>
+          <span class="tag">TPU</span>
+          <span class="tag">PETG</span>
+          <span class="tag">Silk</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">02</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="24,4 44,16 44,32 24,44 4,32 4,16" stroke="currentColor" stroke-width="1.5"/>
+          <polygon points="24,12 36,19 36,29 24,36 12,29 12,19" stroke="currentColor" stroke-width="1.2" fill="currentColor" fill-opacity="0.1"/>
+          <polygon points="24,20 30,23.5 30,28.5 24,32 18,28.5 18,23.5" fill="currentColor" fill-opacity="0.4"/>
+        </svg>
+        <div class="service-title">Multi-Color Prints</div>
+        <p class="service-body">Vibrant multi-color and multi-material prints using the latest ACE-equipped printer systems for stunning results.</p>
+        <div class="service-tags">
+          <span class="tag">ACE System</span>
+          <span class="tag">4-Color</span>
+          <span class="tag">Gradients</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">03</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="20" width="36" height="22" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="6" y="6" width="36" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <line x1="14" y1="11" x2="22" y2="11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="14" y1="14" x2="18" y2="14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <rect x="12" y="26" width="24" height="10" rx="1" stroke="currentColor" stroke-width="1.2" fill="currentColor" fill-opacity="0.08"/>
+        </svg>
+        <div class="service-title">Ammo Storage Systems</div>
+        <p class="service-body">Custom ammo boxes with watertight TPU gaskets. Engineered for reliability, built layer by layer.</p>
+        <div class="service-tags">
+          <span class="tag">Watertight</span>
+          <span class="tag">TPU Gaskets</span>
+          <span class="tag">Custom Sizing</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">04</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="24" cy="24" r="18" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="24" cy="24" r="10" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5"/>
+          <path d="M24 14 L28 22 L24 20 L20 22 Z" fill="currentColor"/>
+          <circle cx="24" cy="24" r="3" fill="currentColor" fill-opacity="0.5"/>
+          <line x1="24" y1="6" x2="24" y2="14" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5"/>
+          <line x1="24" y1="34" x2="24" y2="42" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5"/>
+          <line x1="6" y1="24" x2="14" y2="24" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5"/>
+          <line x1="34" y1="24" x2="42" y2="24" stroke="currentColor" stroke-width="1.2" stroke-opacity="0.5"/>
+        </svg>
+        <div class="service-title">Electroplated Pieces</div>
+        <p class="service-body">Transform 3D prints into metallic art. Electroplating over printed substrates for premium jewelry and decorative items.</p>
+        <div class="service-tags">
+          <span class="tag">Copper</span>
+          <span class="tag">Nickel</span>
+          <span class="tag">Jewelry</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">05</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 38 L12 24 L24 10 L36 24 L36 38 Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+          <line x1="24" y1="10" x2="24" y2="38" stroke="currentColor" stroke-width="1" stroke-opacity="0.4"/>
+          <line x1="12" y1="28" x2="36" y2="28" stroke="currentColor" stroke-width="1" stroke-opacity="0.4"/>
+          <circle cx="24" cy="10" r="3" fill="currentColor" fill-opacity="0.5" stroke="currentColor" stroke-width="1"/>
+          <circle cx="24" cy="10" r="1" fill="currentColor"/>
+        </svg>
+        <div class="service-title">Religious Reproductions</div>
+        <p class="service-body">Faith-inspired sculptural reproductions, relics, and decorative pieces crafted with care and reverence.</p>
+        <div class="service-tags">
+          <span class="tag">Figurines</span>
+          <span class="tag">Crosses</span>
+          <span class="tag">Custom</span>
+        </div>
+      </div>
+
+      <div class="service-card reveal">
+        <div class="service-num">06</div>
+        <svg class="service-icon" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="26" y="8" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="8" y="26" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="26" y="26" width="14" height="14" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <circle cx="15" cy="15" r="3" fill="currentColor" fill-opacity="0.4"/>
+          <circle cx="33" cy="15" r="3" fill="currentColor" fill-opacity="0.4"/>
+          <circle cx="15" cy="33" r="3" fill="currentColor" fill-opacity="0.4"/>
+          <circle cx="33" cy="33" r="3" fill="currentColor" fill-opacity="0.4"/>
+        </svg>
+        <div class="service-title">Prototype & Design</div>
+        <p class="service-body">From sketch to STL to finished part. Rapid prototyping for inventors, entrepreneurs, and makers.</p>
+        <div class="service-tags">
+          <span class="tag">Iterative</span>
+          <span class="tag">Fast Turn</span>
+          <span class="tag">Consulting</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process" class="process-section">
+  <div class="section-inner">
+    <div class="section-label reveal">// How It Works</div>
+    <h2 class="section-h2 reveal">The Process.</h2>
+
+    <div class="process-grid">
+      <div class="process-steps">
+        <div class="process-step reveal">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <div class="step-title">Submit Your Idea</div>
+            <p class="step-desc">Send us a sketch, STL file, or just a description. We'll talk through what you need and build a plan.</p>
+          </div>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <div class="step-title">Design & Slice</div>
+            <p class="step-desc">We optimize your model for printing — wall thickness, supports, layer height, infill — dialing in every parameter.</p>
+          </div>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <div class="step-title">Print & Monitor</div>
+            <p class="step-desc">Your part goes on the machine. We monitor remotely via OctoPrint and catch any issues before they become problems.</p>
+          </div>
+        </div>
+        <div class="process-step reveal">
+          <div class="step-num">04</div>
+          <div class="step-content">
+            <div class="step-title">Finish & Deliver</div>
+            <p class="step-desc">Post-processing, quality check, and delivery. Local pickup in Fort Smith or shipped to you.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Layer visualizer -->
+      <div class="layer-visual reveal">
+        <div class="corner-mark corner-tl"></div>
+        <div class="corner-mark corner-tr"></div>
+        <div class="corner-mark corner-bl"></div>
+        <div class="corner-mark corner-br"></div>
+        <style>
+          .lv-wrap { width: 100%; display: flex; flex-direction: column; gap: 4px; padding: 20px 0; }
+        </style>
+        <div class="lv-wrap" id="layerContainer"></div>
+        <div style="margin-top:24px; font-family:var(--font-mono); font-size:10px; color:var(--text-dim); letter-spacing:0.15em; text-align:center;">
+          LAYER RESOLUTION: 0.1mm — 0.3mm
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS / CAPABILITIES -->
+<section id="materials" style="border-top: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-label reveal">// Materials We Run</div>
+    <h2 class="section-h2 reveal">Built From<br>The Best.</h2>
+
+    <div class="specs-layout reveal">
+      <div>
+        <div class="specs-list">
+          <div class="spec-row"><span class="spec-key">Layer Height</span><span class="spec-val">0.1 – 0.35mm</span></div>
+          <div class="spec-row"><span class="spec-key">Max Build Volume</span><span class="spec-val">300 × 300 × 350mm</span></div>
+          <div class="spec-row"><span class="spec-key">Nozzle Temp</span><span class="spec-val">Up to 280°C</span></div>
+          <div class="spec-row"><span class="spec-key">Bed Temp</span><span class="spec-val">Up to 110°C</span></div>
+          <div class="spec-row"><span class="spec-key">Print Speed</span><span class="spec-val">Up to 500mm/s</span></div>
+          <div class="spec-row"><span class="spec-key">Color Options</span><span class="spec-val">4-Color Multi</span></div>
+          <div class="spec-row"><span class="spec-key">Remote Monitor</span><span class="spec-val">OctoPrint + Tailscale</span></div>
+        </div>
+      </div>
+
+      <div class="materials-grid">
+        <div class="material-chip">
+          <div class="material-name">PLA+</div>
+          <div class="material-desc">Rigid, detail-rich, wide color selection</div>
+        </div>
+        <div class="material-chip">
+          <div class="material-name">TPU</div>
+          <div class="material-desc">Flexible, impact-resistant, gasket-grade</div>
+        </div>
+        <div class="material-chip">
+          <div class="material-name">PETG</div>
+          <div class="material-desc">Heat resistant, food-safe capable</div>
+        </div>
+        <div class="material-chip">
+          <div class="material-name">Silk</div>
+          <div class="material-desc">Lustrous finish, premium appearance</div>
+        </div>
+        <div class="material-chip">
+          <div class="material-name">ABS</div>
+          <div class="material-desc">Functional, post-process with acetone</div>
+        </div>
+        <div class="material-chip">
+          <div class="material-name">More</div>
+          <div class="material-desc">Ask us — we're always expanding</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAITH SECTION -->
+<section id="about" class="faith-section">
+  <div class="faith-inner">
+    <div class="section-label reveal" style="justify-content:center;">// Our Foundation</div>
+    <h2 class="faith-quote reveal">
+      Everything We Build,<br>
+      We Build <em>With Purpose.</em>
+    </h2>
+    <p class="faith-body reveal">
+      WellSpring Studio was founded on the belief that work is a form of worship. We tithe a portion of every sale to The Well church in Pocola, OK — because the spring that fills us should overflow to others.
+    </p>
+    <div class="faith-cross reveal">Faith-Rooted &nbsp;·&nbsp; Community-Driven &nbsp;·&nbsp; Fort Smith, AR</div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="corner-mark corner-tl" style="top:40px;left:48px;"></div>
+  <div class="corner-mark corner-tr" style="top:40px;right:48px;"></div>
+  <div class="section-label reveal" style="justify-content:center;">// Start Your Project</div>
+  <h2 class="cta-h2 reveal">Let's Make<br><span>Something Real.</span></h2>
+  <p class="cta-sub reveal">Have an idea? A file? Just a sketch on a napkin? Reach out and let's figure it out together.</p>
+  <div class="hero-actions reveal" style="justify-content:center;">
+    <a href="mailto:hello@wellspringstudio.com" class="btn-primary">Get a Quote</a>
+    <a href="#services" class="btn-ghost">See Services</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">WellSpring Studio LLC</div>
+  <div class="footer-copy">© 2025 WellSpring Studio LLC · Fort Smith, AR</div>
+  <div class="footer-tagline">Built layer by layer.</div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), (Array.from(reveals).indexOf(e.target) % 3) * 80);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Layer visualizer builder
+  const container = document.getElementById('layerContainer');
+  const widths = [
+    90,90,88,88,86,85,84,82,80,80,78,76,74,72,70,68,66,64,62,60,
+    58,56,54,52,50,48,46,44,42,40,38,36,34,32,30,28
+  ];
+  let idx = 0;
+  function addLayer() {
+    if (idx >= widths.length) {
+      idx = 0;
+      setTimeout(() => {
+        container.innerHTML = '';
+        addLayer();
+      }, 2000);
+      return;
+    }
+    const div = document.createElement('div');
+    div.style.height = '4px';
+    div.style.width = widths[idx] + '%';
+    div.style.background = `rgba(0,229,195,${0.4 + (widths[idx]/90)*0.55})`;
+    div.style.borderRadius = '1px';
+    div.style.alignSelf = 'center';
+    div.style.transition = 'all 0.1s';
+    div.style.opacity = '0';
+    div.style.transform = 'scaleX(0)';
+    div.style.transformOrigin = 'center';
+    container.appendChild(div);
+    requestAnimationFrame(() => {
+      div.style.opacity = '1';
+      div.style.transform = 'scaleX(1)';
+    });
+    idx++;
+    setTimeout(addLayer, 90);
+  }
+  addLayer();
+
+  // Glow follow on product cards
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const glow = card.querySelector('.product-card-glow');
+      if (!glow) return;
+      const r = card.getBoundingClientRect();
+      glow.style.left = (e.clientX - r.left - 100) + 'px';
+      glow.style.top = (e.clientY - r.top - 100) + 'px';
+    });
+  });
+</script>
+</body>
+</html>
