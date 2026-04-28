@@ -21,9 +21,9 @@
   --teal-glow: rgba(0,196,167,.06);
   --ember:     #e8854a;
   --ember-dim: rgba(232,133,74,.12);
-  --border:    rgba(0,196,167,.07);
-  --border2:   rgba(0,196,167,.16);
-  --border3:   rgba(0,196,167,.28);
+  --border:    rgba(0,196,167,.05);
+  --border2:   rgba(0,196,167,.12);
+  --border3:   rgba(0,196,167,.22);
   --fg:        #d8eeea;
   --fg2:       #7aa49e;
   --fg3:       #3d5e59;
@@ -73,11 +73,11 @@ body::before{
     border-radius:50%;pointer-events:none;z-index:9998;
     transform:translate(-50%,-50%);
     transition:width .28s cubic-bezier(.2,0,.2,1),height .28s cubic-bezier(.2,0,.2,1),opacity .2s,border-color .2s;
-    opacity:.5;
+    opacity:.35;
   }
   body:has(a:hover) #cur-ring,
   body:has(button:hover) #cur-ring{
-    width:52px;height:52px;opacity:.15;
+    width:52px;height:52px;opacity:.1;
     border-color:rgba(0,196,167,.6);
   }
   body:has(a:hover) #cur,
@@ -91,16 +91,16 @@ body::before{
 .grid-bg{
   position:fixed;inset:0;pointer-events:none;z-index:0;
   background-image:
-    linear-gradient(rgba(0,196,167,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,196,167,.018) 1px,transparent 1px);
+    linear-gradient(rgba(0,196,167,.012) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,196,167,.012) 1px,transparent 1px);
   background-size:72px 72px;
 }
 .grid-bg::after{
   content:'';position:absolute;inset:0;
   background:
-    radial-gradient(ellipse 55% 50% at 75% 0%,rgba(0,196,167,.06) 0%,transparent 60%),
-    radial-gradient(ellipse 35% 40% at 5% 100%,rgba(232,133,74,.04) 0%,transparent 55%),
-    radial-gradient(ellipse 30% 20% at 50% 50%,rgba(0,196,167,.025) 0%,transparent 60%);
+    radial-gradient(ellipse 55% 50% at 75% 0%,rgba(0,196,167,.045) 0%,transparent 60%),
+    radial-gradient(ellipse 35% 40% at 5% 100%,rgba(232,133,74,.03) 0%,transparent 55%);
+    /* removed 3rd gradient */
 }
 
 /* ── NAV ─────────────────────────────────────────────────── */
@@ -119,14 +119,14 @@ nav{
   letter-spacing:.04em;color:var(--fg);z-index:210;
 }
 .logo-mark{
-  width:28px;height:28px;flex-shrink:0;
+  width:64px;height:64px;flex-shrink:0;
   position:relative;display:flex;align-items:center;justify-content:center;
 }
 
 .nav-links{display:flex;gap:36px;list-style:none}
 .nav-links a{
   font-family:var(--m);font-size:10px;
-  letter-spacing:.12em;text-transform:uppercase;
+  letter-spacing:.1em;text-transform:uppercase;
   color:var(--fg3);transition:color .18s;
   position:relative;
 }
@@ -194,7 +194,7 @@ nav{
   overflow:hidden;
 }
 .hero-left{
-  padding:100px 0 80px;
+  padding:90px 0 70px;
   position:relative;
 }
 
@@ -223,8 +223,8 @@ nav{
 .hero-h1 .alt{color:var(--fg2);font-style:italic;font-size:.7em;letter-spacing:.02em;display:block;margin-top:.1em}
 
 .hero-sub{
-  font-size:14.5px;line-height:1.85;
-  color:var(--fg2);max-width:420px;
+  font-size:15px;line-height:1.7;
+  color:var(--fg2);max-width:460px;
   margin-bottom:44px;font-weight:400;
   opacity:0;animation:rise .85s ease .32s forwards;
 }
@@ -242,16 +242,18 @@ nav{
 }
 .btn-fill{
   background:var(--teal);color:var(--ink);border:1px solid transparent;
+  box-shadow:0 0 0 rgba(0,196,167,0); /* prevents sudden glow pop */
 }
-.btn-fill:hover{background:var(--teal-lt);box-shadow:0 0 30px rgba(0,196,167,.22),0 4px 20px rgba(0,196,167,.14)}
+.btn-fill:hover{background:var(--teal-lt);box-shadow:0 0 24px rgba(0,196,167,.18),0 4px 20px rgba(0,196,167,.14)}
 .btn-fill svg{transition:transform .2s}
 .btn-fill:hover svg{transform:translateX(3px)}
 
 .btn-ghost{
   background:transparent;color:var(--fg2);
   border:1px solid var(--border2);
+  opacity:.85;
 }
-.btn-ghost:hover{color:var(--teal);border-color:var(--teal);background:var(--teal-dim)}
+.btn-ghost:hover{color:var(--teal);border-color:var(--teal);background:var(--teal-dim);opacity:1}
 
 .hero-divider{
   width:100%;height:1px;background:var(--border);
@@ -356,7 +358,7 @@ nav{
 .svc-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:1px;
+  gap:0;
   background:var(--border);
   border:1px solid var(--border);
 }
@@ -365,6 +367,11 @@ nav{
   padding:42px 36px 38px;
   position:relative;overflow:hidden;
   transition:background .25s;
+  border-right:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.svc:nth-child(3n){
+  border-right:none;
 }
 .svc::after{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -390,7 +397,7 @@ nav{
   font-family:var(--s);font-weight:700;font-size:17px;
   letter-spacing:-.01em;margin-bottom:11px;color:var(--fg);
 }
-.svc-body{font-size:13px;line-height:1.78;color:var(--fg2)}
+.svc-body{font-size:13px;line-height:1.7;color:var(--fg2)}
 .tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:24px}
 .tag{
   font-family:var(--m);font-size:8px;letter-spacing:.1em;
@@ -423,7 +430,7 @@ nav{
 }
 .step:last-child .step-line{display:none}
 .step-ttl{font-family:var(--s);font-weight:700;font-size:16px;letter-spacing:-.01em;margin-bottom:8px}
-.step-desc{font-size:13px;line-height:1.78;color:var(--fg2)}
+.step-desc{font-size:13px;line-height:1.7;color:var(--fg2)}
 
 .build-card{
   border:1px solid var(--border2);
@@ -562,7 +569,7 @@ nav{
 .faith-h em{font-style:italic;color:var(--teal)}
 
 .faith-body{
-  font-size:15px;line-height:1.85;color:var(--fg2);
+  font-size:15px;line-height:1.7;color:var(--fg2);
   max-width:560px;margin:0 auto 44px;font-weight:400;
 }
 .faith-rule{
@@ -591,7 +598,7 @@ nav{
 }
 .cta-h em{font-style:italic;color:var(--teal)}
 .cta-sub{
-  font-size:14.5px;line-height:1.8;color:var(--fg2);
+  font-size:14.5px;line-height:1.7;color:var(--fg2);
   max-width:400px;margin:0 auto 44px;font-weight:400;
 }
 .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
@@ -614,8 +621,12 @@ footer{
 }
 .ft-brand em{font-style:italic;color:var(--teal)}
 .ft-tagline{
-  font-size:12.5px;color:var(--fg3);line-height:1.6;
+  font-size:12.5px;color:var(--fg3);line-height:1.7;
   max-width:220px;
+}
+.ft-address{
+  font-size:12px;color:var(--fg2);line-height:1.5;
+  margin-top:12px;
 }
 
 .ft-col-label{
@@ -629,6 +640,11 @@ footer{
   transition:color .18s;
 }
 .ft-links a:hover{color:var(--teal)}
+
+.ft-map{
+  padding:32px 0;
+  border-bottom:1px solid var(--border);
+}
 
 .ft-bottom{
   display:flex;justify-content:space-between;align-items:center;
@@ -645,7 +661,7 @@ footer{
 .ft-tith::before{content:'♥';font-size:10px}
 
 /* ── REVEAL ──────────────────────────────────────────────── */
-.reveal{opacity:0;transform:translateY(22px);transition:opacity .65s ease,transform .65s ease}
+.reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease,transform .6s ease}
 .reveal.in{opacity:1;transform:none}
 @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 
@@ -667,6 +683,7 @@ footer{
 
   footer{padding:0 32px}
   .ft-top{grid-template-columns:1fr 1fr;gap:32px}
+  .ft-map iframe{height:250px}
 
   .svc-grid{grid-template-columns:repeat(2,1fr)}
   .svc-header{margin-bottom:48px}
@@ -702,6 +719,9 @@ footer{
   .faith-inner{padding:72px 20px}
   .faith-ring{width:130px;height:130px}
   .faith-h{font-size:clamp(28px,8vw,40px)}
+
+  footer{padding:0 20px}
+  .ft-map iframe{height:200px}
   .faith-body{font-size:13.5px}
 
   .cta-h{font-size:clamp(36px,10vw,52px)}
@@ -733,19 +753,8 @@ footer{
 <nav>
   <a class="nav-logo" href="#">
     <div class="logo-mark">
-      <svg viewBox="0 0 28 28" fill="none" width="28" height="28">
-        <polygon points="14,2 25,8 25,20 14,26 3,20 3,8" stroke="#00c4a7" stroke-width="1.2" fill="none"/>
-        <polygon points="14,7 20,10.5 20,17.5 14,21 8,17.5 8,10.5" fill="#00c4a7" fill-opacity=".08" stroke="#00c4a7" stroke-width=".7" stroke-opacity=".35"/>
-        <circle cx="14" cy="14" r="2.4" fill="#00c4a7" fill-opacity=".7"/>
-        <line x1="14" y1="2" x2="14" y2="7" stroke="#00c4a7" stroke-width=".6" stroke-opacity=".4"/>
-        <line x1="14" y1="21" x2="14" y2="26" stroke="#00c4a7" stroke-width=".6" stroke-opacity=".4"/>
-        <line x1="3" y1="8" x2="8" y2="10.5" stroke="#00c4a7" stroke-width=".6" stroke-opacity=".4"/>
-        <line x1="20" y1="10.5" x2="25" y2="8" stroke="#00c4a7" stroke-width=".6" stroke-opacity=".4"/>
-        <line x1="3" y1="20" x2="8" y2="17.5" stroke="#00c4a7" stroke-width=".6" stroke-opacity=".4"/>
-        <line x1="20" y1="17.5" x2="25" y2="20" stroke="#00c4a7" stroke-width=".6" stroke-opacity=".4"/>
-      </svg>
+      <img src="wellspring.png" alt="WellSpring Studio" style="width:100%;height:100%;object-fit:contain;">
     </div>
-    WellSpring Studio
   </a>
 
   <ul class="nav-links">
@@ -754,7 +763,7 @@ footer{
     <li><a href="#materials">Materials</a></li>
     <li><a href="#about">About</a></li>
   </ul>
-  <button class="nav-cta">Get a Quote</button>
+  <a href="mailto:sales@wellspringstudiollc.com" class="nav-cta">Get a Quote</a>
   <button class="nav-toggle" id="navToggle" aria-label="Menu">
     <span></span><span></span><span></span>
   </button>
@@ -765,7 +774,7 @@ footer{
   <a href="#process">Process</a>
   <a href="#materials">Materials</a>
   <a href="#about">About</a>
-  <button class="nav-cta">Get a Quote</button>
+  <a href="mailto:sales@wellspringstudiollc.com" class="nav-cta">Get a Quote</a>
 </div>
 
 <!-- HERO -->
@@ -798,7 +807,7 @@ footer{
         <div class="stat-l">Layer Precision</div>
       </div>
       <div>
-        <div class="stat-n">4+</div>
+        <div class="stat-n">5+</div>
         <div class="stat-l">Active Printers</div>
       </div>
       <div>
@@ -1005,49 +1014,49 @@ footer{
       <div class="svc reveal">
         <div class="svc-n">01</div>
         <svg class="svc-ico" viewBox="0 0 34 34" fill="none"><rect x="3" y="25" width="28" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/><rect x="9" y="16" width="16" height="8" rx="1" stroke="currentColor" stroke-width="1.1"/><rect x="12" y="10" width="10" height="5" rx="1" stroke="currentColor" stroke-width="1.1"/><rect x="15" y="5" width="4" height="4" rx=".5" fill="currentColor" fill-opacity=".2" stroke="currentColor" stroke-width="1.1"/><line x1="17" y1="2" x2="17" y2="5" stroke="currentColor" stroke-width="1.1"/><circle cx="17" cy="1.8" r="1.5" fill="currentColor"/></svg>
-        <div class="svc-ttl">Custom FDM Printing</div>
-        <p class="svc-body">Precision-printed parts and products from your files or ours. Fast turnaround, professional results every time.</p>
-        <div class="tags"><span class="tag">PLA+</span><span class="tag">TPU</span><span class="tag">PETG</span><span class="tag">Silk</span></div>
+        <div class="svc-ttl">3D Print Service</div>
+        <p class="svc-body">Bring your own model for a single print and we’ll turn it into a finished part with fast, reliable results.</p>
+        <div class="tags"><span class="tag">BYO Model</span><span class="tag">Single Print</span><span class="tag">Quick Turn</span></div>
       </div>
 
       <div class="svc reveal">
         <div class="svc-n">02</div>
         <svg class="svc-ico" viewBox="0 0 34 34" fill="none"><polygon points="17,2 31,10 31,22 17,30 3,22 3,10" stroke="currentColor" stroke-width="1.1"/><polygon points="17,8 25,13 25,21 17,26 9,21 9,13" stroke="currentColor" stroke-width=".9" fill="currentColor" fill-opacity=".08"/><polygon points="17,14 22,17 22,21 17,24 12,21 12,17" fill="currentColor" fill-opacity=".38"/></svg>
-        <div class="svc-ttl">Multi-Color Prints</div>
-        <p class="svc-body">Vibrant, multi-material prints using ACE-equipped systems. Perfect for logos, art, and layered designs.</p>
-        <div class="tags"><span class="tag">4-Color</span><span class="tag">ACE System</span><span class="tag">Gradients</span></div>
+        <div class="svc-ttl">B2B Partnerships</div>
+        <p class="svc-body">Want to sell our models, or have your own already? Whether you're selling retail or online, We partner with businesses, creators, and retailers for production and fulfillment. No minimum quantities!</p>
+        <div class="tags"><span class="tag">Wholesale</span><span class="tag">Retail</span><span class="tag">Partnerships</span></div>
       </div>
 
       <div class="svc reveal">
         <div class="svc-n">03</div>
         <svg class="svc-ico" viewBox="0 0 34 34" fill="none"><rect x="3" y="13" width="28" height="16" rx="1.5" stroke="currentColor" stroke-width="1.1"/><rect x="3" y="4" width="28" height="8" rx="1" stroke="currentColor" stroke-width="1.1"/><line x1="8" y1="8" x2="16" y2="8" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><rect x="8" y="18" width="18" height="7" rx=".8" stroke="currentColor" stroke-width=".9" fill="currentColor" fill-opacity=".07"/></svg>
-        <div class="svc-ttl">Ammo Storage Systems</div>
-        <p class="svc-body">Custom ammo boxes with watertight TPU gaskets. Engineered for reliability, built layer by layer.</p>
-        <div class="tags"><span class="tag">Watertight</span><span class="tag">TPU Gaskets</span><span class="tag">Custom Size</span></div>
+        <div class="svc-ttl">Custom Silicone Molds</div>
+        <p class="svc-body">Build reusable silicone molds for casting, food-safe forms, and production-ready tooling that works for your process.</p>
+        <div class="tags"><span class="tag">Silicone</span><span class="tag">Molds</span><span class="tag">Casting</span></div>
       </div>
 
       <div class="svc reveal">
         <div class="svc-n">04</div>
         <svg class="svc-ico" viewBox="0 0 34 34" fill="none"><circle cx="17" cy="17" r="13" stroke="currentColor" stroke-width="1.1"/><circle cx="17" cy="17" r="7" stroke="currentColor" stroke-width=".9" stroke-opacity=".4"/><path d="M17 9 L20 15 L17 13.5 L14 15 Z" fill="currentColor"/><circle cx="17" cy="17" r="2.2" fill="currentColor" fill-opacity=".45"/></svg>
-        <div class="svc-ttl">Electroplated Pieces</div>
-        <p class="svc-body">Transform printed substrates into metallic art. Premium jewelry and decorative items with real metal finishes.</p>
-        <div class="tags"><span class="tag">Copper</span><span class="tag">Nickel</span><span class="tag">Jewelry</span></div>
+        <div class="svc-ttl">Prototype &amp; Design</div>
+        <p class="svc-body">From sketch to STL to finished part, we design with you in office and iterate quickly so ideas become production-ready pieces.</p>
+        <div class="tags"><span class="tag">Concept</span><span class="tag">CAD</span><span class="tag">Iteration</span></div>
       </div>
 
       <div class="svc reveal">
         <div class="svc-n">05</div>
         <svg class="svc-ico" viewBox="0 0 34 34" fill="none"><path d="M8 28 L8 17 L17 5 L26 17 L26 28 Z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><line x1="17" y1="5" x2="17" y2="28" stroke="currentColor" stroke-width=".7" stroke-opacity=".3"/><line x1="8" y1="20" x2="26" y2="20" stroke="currentColor" stroke-width=".7" stroke-opacity=".3"/><circle cx="17" cy="5" r="2.2" fill="currentColor" fill-opacity=".45" stroke="currentColor" stroke-width=".9"/></svg>
-        <div class="svc-ttl">Religious Reproductions</div>
-        <p class="svc-body">Faith-inspired sculptures, crosses, and relics — crafted with care and reverence for what they represent.</p>
-        <div class="tags"><span class="tag">Figurines</span><span class="tag">Crosses</span><span class="tag">Custom</span></div>
+        <div class="svc-ttl">Consulting</div>
+        <p class="svc-body">Need a 3D printing workflow in your business, automation support, or maintenance help? We advise companies and keep printers running smoothly.</p>
+        <div class="tags"><span class="tag">Workflow</span><span class="tag">Automation</span><span class="tag">Maintenance</span></div>
       </div>
 
       <div class="svc reveal">
         <div class="svc-n">06</div>
         <svg class="svc-ico" viewBox="0 0 34 34" fill="none"><rect x="3" y="3" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.1"/><rect x="19" y="3" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.1"/><rect x="3" y="19" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.1"/><rect x="19" y="19" width="12" height="12" rx="1" stroke="currentColor" stroke-width="1.1"/><circle cx="9" cy="9" r="2.2" fill="currentColor" fill-opacity=".38"/><circle cx="25" cy="9" r="2.2" fill="currentColor" fill-opacity=".38"/><circle cx="9" cy="25" r="2.2" fill="currentColor" fill-opacity=".38"/><circle cx="25" cy="25" r="2.2" fill="currentColor" fill-opacity=".38"/></svg>
-        <div class="svc-ttl">Prototype &amp; Design</div>
-        <p class="svc-body">From sketch to STL to finished part. Rapid iteration for inventors, entrepreneurs, and makers.</p>
-        <div class="tags"><span class="tag">Iterative</span><span class="tag">Fast Turn</span><span class="tag">Consulting</span></div>
+        <div class="svc-ttl">Filaments</div>
+        <p class="svc-body">We carry PLA and PETG in store for walk-up needs. Stop by for last-minute rolls priced at $20.00 each, contact us for availibility.</p>
+        <div class="tags"><span class="tag">PLA</span><span class="tag">PETG</span><span class="tag">Walk-In</span></div>
       </div>
 
     </div>
@@ -1121,19 +1130,18 @@ footer{
     <div class="mat-layout reveal">
       <div class="spec-table">
         <div class="spec-row"><span class="sk">Layer Height</span><span class="sv">0.1 – 0.35 mm</span></div>
-        <div class="spec-row"><span class="sk">Max Build Volume</span><span class="sv">300 × 300 × 350 mm</span></div>
-        <div class="spec-row"><span class="sk">Nozzle Temp</span><span class="sv">Up to 280 °C</span></div>
+        <div class="spec-row"><span class="sk">Max Build Volume</span><span class="sv">260 × 260 × 260 mm</span></div>
+        <div class="spec-row"><span class="sk">Nozzle Temp</span><span class="sv">Up to 300 °C</span></div>
         <div class="spec-row"><span class="sk">Bed Temp</span><span class="sv">Up to 110 °C</span></div>
         <div class="spec-row"><span class="sk">Max Print Speed</span><span class="sv">500 mm/s</span></div>
         <div class="spec-row"><span class="sk">Color System</span><span class="sv">4-Color Multi</span></div>
-        <div class="spec-row"><span class="sk">Remote Monitoring</span><span class="sv">OctoPrint + Tailscale</span></div>
       </div>
       <div class="mat-grid">
+        <div class="mat"><div class="mat-accent"></div><div class="mat-name">PLA</div><div class="mat-desc">Rigid · Beginner-friendly · Call for inventory</div></div>
         <div class="mat"><div class="mat-accent"></div><div class="mat-name">PLA+</div><div class="mat-desc">Rigid · Detail-rich · Wide color</div></div>
-        <div class="mat"><div class="mat-accent"></div><div class="mat-name">TPU</div><div class="mat-desc">Flexible · Impact-resistant · Gaskets</div></div>
-        <div class="mat"><div class="mat-accent"></div><div class="mat-name">PETG</div><div class="mat-desc">Heat resistant · Food-safe capable</div></div>
+        <div class="mat"><div class="mat-accent"></div><div class="mat-name">TPU95A</div><div class="mat-desc">Flexible · Impact-resistant · Gaskets</div></div>
+        <div class="mat"><div class="mat-accent"></div><div class="mat-name">PETG</div><div class="mat-desc">Heat resistant · Food-safe · Call for inventory</div></div>
         <div class="mat"><div class="mat-accent"></div><div class="mat-name">Silk</div><div class="mat-desc">Lustrous finish · Premium look</div></div>
-        <div class="mat"><div class="mat-accent"></div><div class="mat-name">ABS</div><div class="mat-desc">Functional · Acetone-smoothable</div></div>
         <div class="mat"><div class="mat-accent"></div><div class="mat-name">More</div><div class="mat-desc">Ask us — always expanding</div></div>
       </div>
     </div>
@@ -1187,7 +1195,7 @@ footer{
 
     <div class="faith-quote reveal">"Work is worship."</div>
     <h2 class="faith-h reveal">Everything we build,<br>we build <em>with purpose.</em></h2>
-    <p class="faith-body reveal">WellSpring Studio was founded on the belief that craft is a calling. A portion of every sale is tithed to The Well church in Pocola, OK — because the spring that fills us should overflow to others.</p>
+    <p class="faith-body reveal">WellSpring Studio was founded on the belief that craft is a calling. We support our local church and community while serving hobbyists, curious makers, and River Valley businesses from our brick-and-mortar office and store.</p>
     <div class="faith-rule reveal">
       <span class="faith-ember">Faith-Rooted</span> &nbsp;·&nbsp; Community-Driven &nbsp;·&nbsp; Fort Smith, AR
     </div>
@@ -1197,15 +1205,89 @@ footer{
 <!-- CTA -->
 <section class="section cta">
   <div class="wrap pad">
-    <div class="eye reveal" style="justify-content:center">Start Your Project</div>
-    <h2 class="cta-h reveal">Let's make<br><em>something real.</em></h2>
-    <p class="cta-sub reveal">Have an idea, a file, or just a sketch on a napkin? Reach out and we'll figure it out together.</p>
+    <div class="eye reveal" style="justify-content:center">Come See Us</div>
+    <h2 class="cta-h reveal">What we offer</h2>
+    <p class="cta-sub reveal">Have an idea, a file, or just a sketch on a napkin? Reach out and we'll figure it out together. If you need help with a printer issue, last-minute filament, or a custom design, we can work with you in person, teach you through it, or deliver white glove end-to-end service, whatever works best for you!</p>
     <div class="cta-row reveal">
-      <a href="mailto:hello@wellspringstudio.com" class="btn btn-fill">
+      <a href="mailto:sales@wellspringstudiollc.com" class="btn btn-fill">
         Get a Quote
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7h8M7 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <a href="#services" class="btn btn-ghost">See Services</a>
+    </div>
+  </div>
+</section>
+
+<!-- ETSY SHOP -->
+<section class="section" style="text-align:center; padding: 60px 56px;">
+  <div class="wrap">
+    <div class="eye reveal" style="justify-content:center">Shop Our Work</div>
+    <h2 class="sh reveal">Available on <em>Etsy</em></h2>
+    <div style="margin-top: 40px;">
+      <div id="etsy-dark-feed" class="etsy-feed" 
+           data-shop="WellspringStudioLLC" 
+           data-rows="1" 
+           data-cols="3" 
+           data-display="thumb">
+      </div>
+
+      <script>
+      (function(){
+          const container = document.currentScript.previousElementSibling;
+          const shop = container.getAttribute('data-shop');
+          const rows = +container.getAttribute('data-rows');
+          const cols = +container.getAttribute('data-cols');
+          const display = container.getAttribute('data-display');
+          const rss = 'https://www.etsy.com/shop/' + shop + '/rss';
+          const apiUrl = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(rss);
+
+          fetch(apiUrl)
+              .then(r => r.json())
+              .then(data => {
+                  const items = data.items.slice(0, rows * cols);
+                  const grid = document.createElement('div');
+                  
+                  // Dark grid styling
+                  grid.style.display = 'grid';
+                  grid.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+                  grid.style.gap = '16px';
+                  grid.style.backgroundColor = 'transparent';
+                  grid.style.padding = '0';
+
+                  items.forEach(item => {
+                      const div = document.createElement('div');
+                      
+                      // Dark card styling - match site aesthetic
+                      div.style.backgroundColor = 'var(--ink2)';
+                      div.style.border = '1px solid var(--border)';
+                      div.style.borderRadius = '8px';
+                      div.style.padding = '12px';
+                      div.style.textAlign = 'center';
+                      div.style.transition = 'transform 0.2s, background 0.2s';
+
+                      const temp = document.createElement('div');
+                      temp.innerHTML = item.description;
+                      const imgTag = temp.querySelector('img');
+                      const imgSrc = imgTag ? imgTag.src : '';
+
+                      let content = `<a href="${item.link}" target="_blank" style="text-decoration:none; color:inherit;">`;
+                      content += `<img src="${imgSrc}" style="max-width:100%; border-radius:6px; margin-bottom:10px;">`;
+                      
+                      if (display === 'thumbTitle') {
+                          content += `<div style="color:var(--fg2); font-size:14px; font-weight:500; line-height:1.3;">${item.title}</div>`;
+                      }
+                      content += `</a>`;
+
+                      div.innerHTML = content;
+                      div.addEventListener('mouseenter', () => div.style.backgroundColor = 'var(--ink3)');
+                      div.addEventListener('mouseleave', () => div.style.backgroundColor = 'var(--ink2)');
+                      grid.appendChild(div);
+                  });
+
+                  container.appendChild(grid);
+              });
+      })();
+      </script>
     </div>
   </div>
 </section>
@@ -1216,6 +1298,7 @@ footer{
     <div class="ft-brand-col">
       <div class="ft-brand">WellSpring <em>Studio</em></div>
       <p class="ft-tagline">Precision 3D printing, rooted in faith. Fort Smith, AR.</p>
+      <p class="ft-address">1622 N A St<br>Fort Smith, AR 72901</p>
     </div>
     <div>
       <div class="ft-col-label">Services</div>
@@ -1233,13 +1316,26 @@ footer{
         <a href="#process">Our Process</a>
         <a href="#materials">Materials</a>
         <a href="#about">Our Faith</a>
-        <a href="mailto:hello@wellspringstudio.com">Get a Quote</a>
+        <a href="mailto:sales@wellspringstudiollc.com">Sales & Partnerships</a>
+        <a href="mailto:events@wellspringstudiollc.com">Events</a>
+        <a href="mailto:contact@wellspringstudiollc.com">General Contact</a>
+      </div>
+    </div>
+    <div>
+      <div class="ft-col-label">Connect</div>
+      <div class="ft-links">
+        <a href="https://www.etsy.com/shop/WellspringStudioLLC?ref=profile_header" target="_blank" rel="noopener noreferrer">Etsy Shop</a>
+        <a href="https://www.facebook.com/profile.php?id=61585924627184" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href="https://www.tiktok.com/@wellspringstudio" target="_blank" rel="noopener noreferrer">TikTok</a>
       </div>
     </div>
   </div>
+  <div class="ft-map">
+    <iframe src="https://maps.google.com/maps?q=1622%20N%20A%20St%2C%20Fort%20Smith%2C%20AR%2072901&output=embed" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen loading="lazy"></iframe>
+  </div>
   <div class="ft-bottom">
     <span>© 2025 WellSpring Studio LLC &nbsp;·&nbsp; Fort Smith, AR</span>
-    <span class="ft-tith">&nbsp; 10% tithed to The Well, Pocola OK</span>
+    <span class="ft-tith">&nbsp; Proudly supporting our local church and River Valley community</span>
   </div>
 </footer>
 
@@ -1309,7 +1405,7 @@ function nextLayer(){
     opacity:'0',transform:'scaleX(0)',transformOrigin:'center',
     transition:'opacity .06s,transform .1s ease',flexShrink:'0'
   });
-  wrap.appendChild(d);
+  wrap.insertBefore(d, wrap.firstChild);
   requestAnimationFrame(()=>{d.style.opacity='1';d.style.transform='scaleX(1)';});
   if(counter)counter.textContent=(li+1)+'/'+profile.length;
   li++;
